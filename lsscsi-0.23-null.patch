@@ -1,0 +1,42 @@
+From 298058559eac4619ce938dfd38b37f9c2f37dabc Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Dan=20Hor=C3=A1k?= <dan@danny.cz>
+Date: Thu, 6 May 2010 14:14:34 +0200
+Subject: [PATCH] check for both string representation of NULL
+
+---
+ lsscsi.c |    7 ++++---
+ 1 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/lsscsi.c b/lsscsi.c
+index 1e5bb11..a10f3aa 100644
+--- a/lsscsi.c
++++ b/lsscsi.c
+@@ -2119,7 +2119,8 @@ one_host_entry(const char * dir_name, const char * devname,
+ {
+         char buff[NAME_LEN_MAX];
+         char value[NAME_LEN_MAX];
+-        char * nullname = "<NULL>";
++        char * nullname1 = "<NULL>";
++        char * nullname2 = "(null)";
+         unsigned int host_id;
+ 
+         if (opts->classic) {
+@@ -2135,13 +2136,13 @@ one_host_entry(const char * dir_name, const char * devname,
+         strcat(buff, "/");
+         strcat(buff, devname);
+         if ((get_value(buff, "proc_name", value, NAME_LEN_MAX)) &&
+-            (strncmp(value, nullname, 6)))
++            (strncmp(value, nullname1, 6)) && (strncmp(value, nullname2, 6)))
+                 printf("  %-12s  ", value);
+         else if (if_directory_chdir(buff, "device/../driver")) {
+                 char wd[NAME_LEN_MAX];
+ 
+                 if (NULL == getcwd(wd, NAME_LEN_MAX))
+-                        printf("  %-12s  ", nullname);
++                        printf("  %-12s  ", nullname2);
+                 else
+                         printf("  %-12s  ", basename(wd));
+ 
+-- 
+1.6.6.1
+

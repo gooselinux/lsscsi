@@ -1,0 +1,34 @@
+From 200225b0fe1d516171434b5bea3ec3d8e8880bf3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Dan=20Hor=C3=A1k?= <dan@danny.cz>
+Date: Thu, 6 May 2010 11:29:47 +0200
+Subject: [PATCH] fix separators for FC
+
+---
+ lsscsi.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lsscsi.c b/lsscsi.c
+index 9fa9489..1e5bb11 100644
+--- a/lsscsi.c
++++ b/lsscsi.c
+@@ -1027,7 +1027,7 @@ transport_init_longer(const char * path_name,
+                 break;
+         case TRANSPORT_FC:
+                 printf("  transport=fc\n");
+-                strcat(buff, "/device/fc_host:");
++                strcat(buff, "/device/fc_host/");
+                 strcat(buff, cp);
+                 if (get_value(buff, "node_name", value, NAME_LEN_MAX))
+                         printf("  node_name=%s\n", value);
+@@ -1394,7 +1394,7 @@ transport_tport_longer(const char * devname,
+                         return;
+                 *cp = '\0';
+                 cp = basename(wd);
+-                strcpy(buff, "fc_remote_ports:");
++                strcpy(buff, "fc_remote_ports/");
+                 strcat(buff, cp);
+                 if (! if_directory_chdir(wd, buff))
+                         return;
+-- 
+1.6.6.1
+
